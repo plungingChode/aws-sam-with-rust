@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app-rs
+
+  Sample SAM Template for sam-app-rs
+
+# More info about Globals: 
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  # Table:
+  #   # More info about SimpleTable Resource: 
+  #   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-simpletable.html 
+  #   Type: AWS::Serverless::SimpleTable 
+  #   Properties:
+  #     PrimaryKey:
+  #       Name: id
+  #       Type: String
+
+  HelloWorldFunction:
+    # More info aboue Function Resource:
+    # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: target/lambda/hello-world/
+      Handler: bootstrap.is.the.handler
+      Runtime: provided.al2
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          # More info about API Event Source:
+          # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
+          Properties:
+            # Path: /{id}
+            Path: /hello
+            Method: get
+  HelloUniverseFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: target/lambda/hello-universe/
+      Handler: bootstrap.is.the.handler
+      Runtime: provided.al2
+      Architectures:
+        - x86_64
+      Events:
+        HelloUniverse:
+          Type: Api 
+          Properties:
+            Path: /hello-2
+            Method: get
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: "Hello world endpoint"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/hello"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
+  HelloUniverseFunction:
+    Description: "Hello World Lambda Function, but in uppercase ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
+  # PutTable:
+  #   Description: "DynamoDB table name"
+  #   Value: !GetAtt Table.Arn
