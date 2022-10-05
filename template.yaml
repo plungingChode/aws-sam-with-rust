@@ -62,6 +62,9 @@ Outputs:
   HelloWorldApi:
     Description: "Hello world endpoint"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/hello"
+  HelloUniverseApi:
+    Description: "Hello world endpoint, but uppercase"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/hello-2"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
